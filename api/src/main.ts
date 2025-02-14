@@ -7,25 +7,26 @@ import { exec } from 'child_process';
 
 async function bootstrap() {
   // load data from GitHub repo to local db
-  // const child = exec(
-  //   'node ./src/lib/db/populate-db.js',
-  //   (error, stdout, stderr) => {
-  //     if (error) {
-  //       console.error(`Error populating database: ${stderr}`);
-  //     } else {
-  //       console.log(`Database population output: ${stdout}`);
-  //     }
-  //   },
-  // );
+  console.log('start loading')
+  const child = exec(
+    'node ./src/lib/db/populate-db.js',
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error populating database: ${stderr}`);
+      } else {
+        console.log(`Database population output: ${stdout}`);
+      }
+    },
+  );
 
-  // // Redirect stdout and stderr to the console
-  // child.stdout.on('data', (data) => {
-  //   console.log(`stdout: ${data}`);
-  // });
+  // Redirect stdout and stderr to the console
+  child.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
 
-  // child.stderr.on('data', (data) => {
-  //   console.error(`stderr: ${data}`);
-  // });
+  child.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: '*',
